@@ -1,0 +1,2 @@
+D:\Documents\Northeastern\Courses\PRCV-5330\MinGW\mingw64\bin\ar.exe qc libFeatures.a CMakeFiles/Features.dir/genFeatures.cpp.obj
+D:\Documents\Northeastern\Courses\PRCV-5330\MinGW\mingw64\bin\ranlib.exe libFeatures.a
