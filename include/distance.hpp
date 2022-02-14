@@ -16,4 +16,5 @@
 using namespace cv;
 using namespace std;
 
-float SSD(vector<float> image1, vector<float> image2);
+float SSD(vector<float> image1_data, vector<float> image2_data);
+float SAD(vector<float> image1_data, vector<float> image2_data);

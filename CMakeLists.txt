@@ -12,6 +12,7 @@ add_executable(extract ./src/extractFeatures.cpp)
 
 target_link_libraries(matching CSV_UTIL)
 target_link_libraries(matching Distance)
+target_link_libraries(matching Features)
 target_link_libraries(extract CSV_UTIL)
 target_link_libraries(extract Features)
 
