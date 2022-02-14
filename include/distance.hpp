@@ -12,3 +12,8 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <vector>
+
+using namespace cv;
+using namespace std;
+
+float SSD(vector<float> image1, vector<float> image2);

@@ -14,28 +14,28 @@
 #include <dirent.h>
 
 #include <iostream>
+#include <map>
 #include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
 
 #include "csv_util.h"
+#include "distance.hpp"
+#include "genFeatures.hpp"
 
 using namespace std;
 using namespace cv;
 
 int main(int argc, const char *argv[]) {
   if (argc < 6) {
-    cout << "Please input <filename> <target image> <directory path>"
-            " <method name> <feature name> <number of images to be found>";
+    cout << "Please input <filename> <target image path> <distance method>"
+            " <feature> <feature set file> <number of images to be found>";
     return -1;
   }
 
   char target[256];
-  char dirname[256];
   char method[256];
   char feature[256];
-  char buffer[256];
+  char feature_file[256];
+  unsigned int n;
   FILE *fp;
   DIR *dirp;
   struct dirent *dp;
@@ -45,19 +45,40 @@ int main(int argc, const char *argv[]) {
   strcpy(target, argv[1]);
   cout << "Target image name: " << target << endl;
 
-  // get the directory path
-  strcpy(dirname, argv[2]);
-  cout << "Directory name: " << dirname << endl;
+  // get the distance mthod name
+  strcpy(method, argv[2]);
+  cout << "Distance method: " << method << endl;
 
   // get the method name
-  strcpy(method, argv[3]);
-  cout << "Method name: " << method << endl;
+  strcpy(feature, argv[3]);
+  cout << "Feature name: " << feature << endl;
 
-  // open the directory
-  dirp = opendir(dirname);
-  if (dirp == NULL) {
-    cout << "Cannot open directory " << dirname << endl;
-    return -1;
+  // get the feature file path
+  strcpy(feature_file, argv[4]);
+  cout << "Feature file path: " << feature_file << endl;
+
+  // read the file and get the images and features
+  vector<char *> image_names;
+  vector<std::vector<float>> image_data;
+  read_image_data_csv(feature_file, image_names, image_data, false);
+
+  Mat target_image = imread(target, IMREAD_COLOR);
+
+  typedef map<string, float> ErrorMap;
+  ErrorMap errors;
+
+  if (!strcmp(feature, "baseline")) {
+    vector<float> target_data;
+    baseline(target_image, target_data);
+    for (unsigned int i = 0; i < image_names.size(); i++) {
+      errors[image_names[i]] = SSD(target_data, image_data[i]);
+    }
+  }
+
+  ErrorMap::iterator pos;
+  for (pos = errors.begin(); pos != errors.end(); ++pos) {
+    cout << "key: \"" << pos->first << "\" "
+         << "value: " << pos->second << endl;
   }
 
   cout << "Terminating...";

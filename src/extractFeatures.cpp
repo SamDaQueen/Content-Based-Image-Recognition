@@ -7,15 +7,14 @@
  *
  * @copyright Copyright (c) 2022
  *
+ * Reference taken from readfiles.cpp @author Bruce A. Maxwell
+ *
  */
 
 #include <dirent.h>
 
 #include <iostream>
 #include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
 #include <vector>
 
 #include "csv_util.h"
@@ -36,7 +35,6 @@ int main(int argc, const char *argv[]) {
   FILE *fp;
   DIR *dirp;
   struct dirent *dp;
-  int i;
 
   // get the directory path
   strcpy(dirname, argv[1]);
