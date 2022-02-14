@@ -1,7 +1,7 @@
 /**
  * @file genFeatures.cpp
  * @author Samreen
- * @brief
+ * @brief Implements the header file genFeatures.hpp
  * @version 0.1
  * @date 2022-02-13
  *

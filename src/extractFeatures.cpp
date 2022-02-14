@@ -1,7 +1,8 @@
 /**
  * @file extractFeatures.cpp
  * @author Samreen
- * @brief
+ * @brief Extract the given feature from a directory of images and store in a
+ * csv file
  * @version 0.1
  * @date 2022-02-13
  *

@@ -1,7 +1,7 @@
 /**
  * @file genFeatures.hpp
  * @author Samreen
- * @brief
+ * @brief Header file for generating the features of an image
  * @version 0.1
  * @date 2022-02-13
  *
@@ -18,8 +18,48 @@
 using namespace cv;
 using namespace std;
 
+/**
+ * @brief Creates a feature vector of the 9x9 square at the center of an image
+ *
+ * @param src input image
+ * @param image_data output vector to store image features to
+ * @return int 0 if operation was succesful
+ */
 int baseline(Mat &src, vector<float> &image_data);
+
+/**
+ * @brief Creates a feature vector using a 2-D histogram of the image
+ *
+ * @param src input image
+ * @param image_data output vector to store image features to
+ * @return int 0 if operation was succesful
+ */
 int histogram(Mat &src, vector<float> &image_data);
+
+/**
+ * @brief Creates a feature vector using histograms of multiple sections of the
+ * image
+ *
+ * @param src input image
+ * @param image_data output vector to store image features to
+ * @return int 0 if operation was succesful
+ */
 int multiHist(Mat &src, vector<float> &image_data);
+
+/**
+ * @brief Creates a feature vector of the texture of the image
+ *
+ * @param src input image
+ * @param image_data output vector to store image features to
+ * @return int 0 if operation was succesful
+ */
 int textureHist(Mat &src, vector<float> &image_data);
+
+/**
+ * @brief Creates a feature vector of the color of the image
+ *
+ * @param src input image
+ * @param image_data output vector to store image features to
+ * @return int 0 if operation was succesful
+ */
 int colorHist(Mat &src, vector<float> &image_data);

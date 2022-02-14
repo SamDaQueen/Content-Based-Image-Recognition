@@ -1,7 +1,8 @@
 /**
  * @file matching.cpp
  * @author Samreen
- * @brief
+ * @brief Use the feature set stored in a csv to match a target image with all
+ * the images in the directory to generate top n results
  * @version 0.1
  * @date 2022-02-13
  *
