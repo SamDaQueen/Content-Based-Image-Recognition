@@ -59,3 +59,13 @@ int textureHist(Mat &src, vector<float> &image_data);
  * @return int 0 if operation was succesful
  */
 int colorHist(Mat &src, vector<float> &image_data);
+
+/**
+ * @brief Creates a feature vector of the rg histogram of the center of the
+ * image
+ *
+ * @param src input image
+ * @param image_data output vector to store image features to
+ * @return int 0 if operation was succesful
+ */
+int centerHist(Mat &src, vector<float> &image_data);

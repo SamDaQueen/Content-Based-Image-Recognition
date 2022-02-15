@@ -89,6 +89,11 @@ int main(int argc, const char *argv[]) {
         multiHist(img, values);
         char filename[] = "data/multi.csv";
         append_image_data_csv(filename, buffer, values, false);
+      } else if (!strcmp(feature, "center")) {
+        vector<float> values;
+        centerHist(img, values);
+        char filename[] = "data/center.csv";
+        append_image_data_csv(filename, buffer, values, false);
       }
     }
   }

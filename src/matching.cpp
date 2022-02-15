@@ -68,28 +68,6 @@ int main(int argc, const char *argv[]) {
   sscanf(argv[5], "%d", &n);
   cout << "Number of images to match: " << n << endl;
 
-  /*
-   // get the target image name
-   strcpy(target, "../../data/test/pic.0752.jpg");
-   cout << "Target image name: " << target << endl;
-
-   // get the distance mthod name
-   strcpy(method, "ssd");
-   cout << "Distance method: " << method << endl;
-
-   // get the method name
-   strcpy(feature, "texture");
-   cout << "Feature name: " << feature << endl;
-
-   // get the feature file path
-   strcpy(feature_file, "../../data/texture.csv");
-   cout << "Feature file path: " << feature_file << endl;
-
-   // get the number of images to match
-   n = 3;
-   cout << "Number of images to match: " << n << endl;
-   */
-
   // read the file and get the images and features
   vector<char *> image_names;
   vector<std::vector<float>> image_data;
@@ -108,8 +86,8 @@ int main(int argc, const char *argv[]) {
     textureHist(target_image, target_texture);
     colorHist(target_image, target_color);
 
-    vector<std::vector<float>> image_data_tex;
-    vector<std::vector<float>> image_data_col;
+    vector<vector<float>> image_data_tex;
+    vector<vector<float>> image_data_col;
 
     strcpy(feature_file, "data/texture.csv");
     read_image_data_csv(feature_file, image_names, image_data_tex, false);
@@ -126,6 +104,28 @@ int main(int argc, const char *argv[]) {
         errors[SAD(target_texture, image_data_tex[i]) +
                SAD(target_color, image_data_col[i])] = image_names[i];
       }
+    }
+
+  } else if (!strcmp(feature, "center")) {
+    vector<float> target_data;
+    centerHist(target_image, target_data);
+
+    vector<float> target_texture(&target_data[0], &target_data[NUM_BINS]);
+    vector<float> target_color(&target_data[NUM_BINS],
+                               &target_data[NUM_BINS * NUM_BINS + NUM_BINS]);
+
+    strcpy(feature_file, "data/center.csv");
+    read_image_data_csv(feature_file, image_names, image_data, false);
+
+    for (unsigned int i = 0; i < image_data.size(); i++) {
+      vector<float> image_data_tex(&image_data[i][0], &image_data[i][NUM_BINS]);
+      vector<float> image_data_col(
+          &image_data[i][NUM_BINS],
+          &image_data[i][NUM_BINS * NUM_BINS + NUM_BINS]);
+
+      errors[0.75f * intersection(target_texture, image_data_tex) +
+             0.25f * intersection(target_color, image_data_col)] =
+          image_names[i];
     }
 
   } else if (!strcmp(feature, "multi")) {

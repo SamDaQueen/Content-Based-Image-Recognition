@@ -272,3 +272,32 @@ int multiHist(Mat &src, vector<float> &image_data) {
 
   return 0;
 }
+
+int centerHist(Mat &src, vector<float> &image_data) {
+  Mat center_image = src(Range(src.rows / 3, 2 * src.rows / 3),
+                         Range(src.cols / 3, 2 * src.cols / 3));
+
+  // imshow("center", center_image);
+
+  vector<float> texture_data(NUM_BINS, 0);
+  vector<float> color_data(NUM_BINS * NUM_BINS, 0);
+
+  textureHist(center_image, texture_data);
+  colorHist(center_image, color_data);
+
+  for (unsigned int i = 0; i < texture_data.size(); i++) {
+    image_data.push_back(texture_data[i]);
+  }
+
+  for (unsigned int i = 0; i < color_data.size(); i++) {
+    image_data.push_back(color_data[i]);
+  }
+
+  // wait for a keystroke q
+  // char key = waitKey(10);
+  // while (key != 'q') {
+  //   key = waitKey(10);
+  // }
+
+  return 0;
+}
