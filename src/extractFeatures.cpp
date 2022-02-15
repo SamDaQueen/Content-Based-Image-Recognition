@@ -79,10 +79,15 @@ int main(int argc, const char *argv[]) {
         textureHist(img, values);
         char filename[] = "data/texture.csv";
         append_image_data_csv(filename, buffer, values, false);
-      } else if (!strcmp(feature, "color")) {
+      } else if (!strcmp(feature, "histogram")) {
         vector<float> values(NUM_BINS * NUM_BINS, 0);
         colorHist(img, values);
         char filename[] = "data/color.csv";
+        append_image_data_csv(filename, buffer, values, false);
+      } else if (!strcmp(feature, "multi")) {
+        vector<float> values(NUM_BINS * NUM_BINS * 5, 0);
+        multiHist(img, values);
+        char filename[] = "data/multi.csv";
         append_image_data_csv(filename, buffer, values, false);
       }
     }

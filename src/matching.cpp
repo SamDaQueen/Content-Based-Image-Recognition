@@ -143,11 +143,16 @@ int main(int argc, const char *argv[]) {
         target_data.push_back(0);
       }
       textureHist(target_image, target_data);
-    } else if (!strcmp(feature, "color")) {
+    } else if (!strcmp(feature, "histogram")) {
       for (unsigned int i = 0; i < NUM_BINS * NUM_BINS; i++) {
         target_data.push_back(0);
       }
       colorHist(target_image, target_data);
+    } else if (!strcmp(feature, "multi")) {
+      for (unsigned int i = 0; i < NUM_BINS * NUM_BINS; i++) {
+        target_data.push_back(0);
+      }
+      multiHist(target_image, target_data);
     }
     cout << "Done creating target image features" << endl;
     if (!strcmp(method, "ssd")) {

@@ -212,3 +212,39 @@ int colorHist(Mat &src, vector<float> &image_data) {
 
   return 0;
 }
+
+int multiHist(Mat &src, vector<float> &image_data) {
+  Mat q1 = src(Range(0, src.rows / 2), Range(0, src.cols / 2));
+  Mat q2 = src(Range(0, src.rows / 2), Range(src.cols / 2, src.cols));
+  Mat q3 = src(Range(src.rows / 2, src.rows), Range(0, src.cols / 2));
+  Mat q4 = src(Range(src.rows / 2, src.rows), Range(src.cols / 2, src.cols));
+  Mat q5 = src(Range(src.rows / 3, 2 * src.rows / 3),
+               Range(src.cols / 3, 2 * src.cols / 3));
+
+  vector<float> q1_data(NUM_BINS * NUM_BINS, 0);
+  vector<float> q2_data(NUM_BINS * NUM_BINS, 0);
+  vector<float> q3_data(NUM_BINS * NUM_BINS, 0);
+  vector<float> q4_data(NUM_BINS * NUM_BINS, 0);
+  vector<float> q5_data(NUM_BINS * NUM_BINS, 0);
+
+  colorHist(q1, q1_data);
+  colorHist(q2, q2_data);
+  colorHist(q3, q3_data);
+  colorHist(q4, q4_data);
+  colorHist(q5, q5_data);
+
+  for (unsigned int i = 0; i < q1_data.size(); i++) {
+    image_data.push_back(q1_data[i]);
+  }
+
+  image_data.insert(image_data.end(), q2_data.begin(), q2_data.end());
+  image_data.insert(image_data.end(), q3_data.begin(), q3_data.end());
+  image_data.insert(image_data.end(), q4_data.begin(), q4_data.end());
+
+  // extra weightage to central quadrant
+  for (unsigned int i = 0; i < q5_data.size(); i++) {
+    image_data.push_back(q5_data[i] * 10);
+  }
+
+  return 0;
+}
