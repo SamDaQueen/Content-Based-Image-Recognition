@@ -85,7 +85,7 @@ int main(int argc, const char *argv[]) {
         char filename[] = "data/color.csv";
         append_image_data_csv(filename, buffer, values, false);
       } else if (!strcmp(feature, "multi")) {
-        vector<float> values(NUM_BINS * NUM_BINS * 5, 0);
+        vector<float> values;
         multiHist(img, values);
         char filename[] = "data/multi.csv";
         append_image_data_csv(filename, buffer, values, false);
@@ -93,7 +93,7 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  cout << "Terminating...";
+  cout << "Image data written...\nTerminating...";
 
   return 0;
 }

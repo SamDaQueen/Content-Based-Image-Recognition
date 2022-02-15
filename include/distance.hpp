@@ -35,3 +35,13 @@ float SSD(vector<float> image1_data, vector<float> image2_data);
  * @return float the error between the images
  */
 float SAD(vector<float> image1_data, vector<float> image2_data);
+
+/**
+ * @brief Caluclate the distance between two vectors histogram intersection
+ * distance method
+ *
+ * @param image1_data the feature set of the first image
+ * @param image2_data the feature set of the second image
+ * @return float the error between the images
+ */
+float intersection(vector<float> image1_data, vector<float> image2_data);

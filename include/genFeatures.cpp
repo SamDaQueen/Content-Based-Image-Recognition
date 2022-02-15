@@ -174,7 +174,10 @@ int textureHist(Mat &src, vector<float> &image_data) {
 
   extractFeatures(grayscaleMagnitude, image_data);
 
-  unsigned int sum = accumulate(image_data.begin(), image_data.end(), 0);
+  float sum = 0.0f;
+  for (unsigned int i = 0; i < image_data.size(); i++) {
+    sum += image_data[i];
+  }
 
   for (unsigned int i = 0; i < image_data.size(); i++) {
     image_data[i] = image_data[i] / sum;
@@ -204,7 +207,10 @@ int colorHist(Mat &src, vector<float> &image_data) {
     }
   }
 
-  unsigned int sum = accumulate(image_data.begin(), image_data.end(), 0);
+  float sum = 0.0f;
+  for (unsigned int i = 0; i < image_data.size(); i++) {
+    sum += image_data[i];
+  }
 
   for (unsigned int i = 0; i < image_data.size(); i++) {
     image_data[i] = image_data[i] / sum;
@@ -214,37 +220,55 @@ int colorHist(Mat &src, vector<float> &image_data) {
 }
 
 int multiHist(Mat &src, vector<float> &image_data) {
-  Mat q1 = src(Range(0, src.rows / 2), Range(0, src.cols / 2));
-  Mat q2 = src(Range(0, src.rows / 2), Range(src.cols / 2, src.cols));
-  Mat q3 = src(Range(src.rows / 2, src.rows), Range(0, src.cols / 2));
-  Mat q4 = src(Range(src.rows / 2, src.rows), Range(src.cols / 2, src.cols));
-  Mat q5 = src(Range(src.rows / 3, 2 * src.rows / 3),
-               Range(src.cols / 3, 2 * src.cols / 3));
+  // vector<Mat> q(5);
+  // q[0] = src(Range(src.rows / 4, 3 * src.rows / 4),
+  //            Range(src.cols / 4, 3 * src.cols / 4));
+  // q[1] = src(Range(0, src.rows / 2), Range(0, src.cols / 2));
+  // q[2] = src(Range(0, src.rows / 2), Range(src.cols / 2, src.cols));
+  // q[3] = src(Range(src.rows / 2, src.rows), Range(0, src.cols / 2));
+  // q[4] = src(Range(src.rows / 2, src.rows), Range(src.cols / 2, src.cols));
+
+  // imshow("q0", q[0]);
+  // imshow("q1", q[1]);
+  // imshow("q2", q[2]);
+  // imshow("q3", q[3]);
+  // imshow("q4", q[4]);
+
+  // vector<vector<float>> q_data(5, vector<float>(NUM_BINS * NUM_BINS, 0));
+
+  // for (unsigned int i = 0; i < 5; i++) {
+  //   colorHist(q[i], q_data[i]);
+  // }
+
+  // for (unsigned int i = 0; i < q_data[0].size(); i++) {
+  //   image_data.push_back(q_data[0][i]);
+  // }
+
+  // for (unsigned int i = 1; i < 5; i++) {
+  //   image_data.insert(image_data.end(), q_data[i].begin(), q_data[i].end());
+  // }
+
+  Mat q1 = src(Range(0, src.rows / 2), Range(0, src.cols));
+  Mat q2 = src(Range(src.rows / 2, src.rows), Range(0, src.cols));
 
   vector<float> q1_data(NUM_BINS * NUM_BINS, 0);
   vector<float> q2_data(NUM_BINS * NUM_BINS, 0);
-  vector<float> q3_data(NUM_BINS * NUM_BINS, 0);
-  vector<float> q4_data(NUM_BINS * NUM_BINS, 0);
-  vector<float> q5_data(NUM_BINS * NUM_BINS, 0);
 
   colorHist(q1, q1_data);
   colorHist(q2, q2_data);
-  colorHist(q3, q3_data);
-  colorHist(q4, q4_data);
-  colorHist(q5, q5_data);
 
   for (unsigned int i = 0; i < q1_data.size(); i++) {
     image_data.push_back(q1_data[i]);
   }
-
-  image_data.insert(image_data.end(), q2_data.begin(), q2_data.end());
-  image_data.insert(image_data.end(), q3_data.begin(), q3_data.end());
-  image_data.insert(image_data.end(), q4_data.begin(), q4_data.end());
-
-  // extra weightage to central quadrant
-  for (unsigned int i = 0; i < q5_data.size(); i++) {
-    image_data.push_back(q5_data[i] * 10);
+  for (unsigned int i = 0; i < q2_data.size(); i++) {
+    image_data.push_back(q2_data[i]);
   }
+
+  // // wait for a keystroke q
+  // char key = waitKey(10);
+  // while (key != 'q') {
+  //   key = waitKey(10);
+  // }
 
   return 0;
 }

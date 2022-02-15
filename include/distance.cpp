@@ -11,6 +11,8 @@
 
 #include "distance.hpp"
 
+#include <iostream>
+
 float SSD(vector<float> image1_data, vector<float> image2_data) {
   float error = 0.0f;
   for (unsigned int i = 0; i < image1_data.size(); i++) {
@@ -27,5 +29,23 @@ float SAD(vector<float> image1_data, vector<float> image2_data) {
     error += abs(image1_data[i] - image2_data[i]);
   }
 
+  return error;
+}
+
+float intersection(vector<float> image1_data, vector<float> image2_data) {
+  float error = 0.0f;
+  for (unsigned int i = 0; i < image1_data.size(); i++) {
+    error += min(image1_data[i], image2_data[i]);
+  }
+  float sum1 = 0.0f;
+  for (unsigned int i = 0; i < image1_data.size(); i++) {
+    sum1 += image1_data[i];
+  }
+  float sum2 = 0.0f;
+  for (unsigned int i = 0; i < image2_data.size(); i++) {
+    sum2 += image2_data[i];
+  }
+  error /= max(sum1, sum2);
+  error = 1 - error;
   return error;
 }

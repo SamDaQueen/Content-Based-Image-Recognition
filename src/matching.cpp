@@ -118,19 +118,51 @@ int main(int argc, const char *argv[]) {
 
     if (!strcmp(method, "ssd")) {
       for (unsigned int i = 0; i < image_data_tex.size(); i++) {
-        cout << "assigning for :"
-             << SSD(target_texture, image_data_tex[i]) +
-                    SSD(target_color, image_data_col[i])
-             << endl;
         errors[SSD(target_texture, image_data_tex[i]) +
                SSD(target_color, image_data_col[i])] = image_names[i];
       }
-      cout << "errors calculated";
     } else {
       for (unsigned int i = 0; i < image_data_tex.size(); i++) {
         errors[SAD(target_texture, image_data_tex[i]) +
                SAD(target_color, image_data_col[i])] = image_names[i];
       }
+    }
+
+  } else if (!strcmp(feature, "multi")) {
+    read_image_data_csv(feature_file, image_names, image_data, false);
+    multiHist(target_image, target_data);
+
+    for (unsigned int i = 0; i < image_names.size(); i++) {
+      // vector<float> temp(&target_data[0], &target_data[NUM_BINS * NUM_BINS]);
+
+      // cout << "temps size:" << temp.size() << endl;
+      // for (int k = 0; k < temp.size(); k++) {
+      //   cout << temp[k] << " ";
+      // }
+
+      float error =
+          0.7 *
+          SSD(vector<float>(&target_data[0], &target_data[NUM_BINS * NUM_BINS]),
+              vector<float>(&image_data[i][0],
+                            &image_data[i][NUM_BINS * NUM_BINS]));
+
+      error +=
+          0.3 * SSD(vector<float>(&target_data[NUM_BINS * NUM_BINS],
+                                  &target_data[NUM_BINS * NUM_BINS * 2]),
+                    vector<float>(&image_data[i][NUM_BINS * NUM_BINS],
+                                  &image_data[i][NUM_BINS * NUM_BINS * 2]));
+
+      // for (unsigned int j = 1; j < 5; j++) {
+      //   error +=
+      //       0.2 *
+      //       SSD(vector<float>(&target_data[NUM_BINS * NUM_BINS * j],
+      //                         &target_data[NUM_BINS * NUM_BINS * (j + 1)]),
+      //           vector<float>(&image_data[i][NUM_BINS * NUM_BINS * j],
+      //                         &image_data[i][NUM_BINS * NUM_BINS * (j +
+      //                         1)]));
+      // }
+
+      errors[error] = image_names[i];
     }
 
   } else {
@@ -148,16 +180,10 @@ int main(int argc, const char *argv[]) {
         target_data.push_back(0);
       }
       colorHist(target_image, target_data);
-    } else if (!strcmp(feature, "multi")) {
-      for (unsigned int i = 0; i < NUM_BINS * NUM_BINS; i++) {
-        target_data.push_back(0);
-      }
-      multiHist(target_image, target_data);
     }
     cout << "Done creating target image features" << endl;
     if (!strcmp(method, "ssd")) {
       for (unsigned int i = 0; i < image_names.size(); i++) {
-        cout << "assigning for :" << SSD(target_data, image_data[i]) << endl;
         errors[SSD(target_data, image_data[i])] = image_names[i];
       }
     } else {
@@ -168,9 +194,7 @@ int main(int argc, const char *argv[]) {
   }
 
   ErrorMap::iterator pos = errors.begin();
-  cout << "map size" << errors.size();
   resizeImage(target_image, target_image, n);
-  cout << "resized target image";
 
   unsigned int i;
   for (pos++, i = 0; i < n; ++pos, i++) {
