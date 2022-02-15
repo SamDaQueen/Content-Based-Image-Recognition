@@ -33,11 +33,11 @@ void resizeImage(Mat &src, Mat &dst, unsigned int n) {
 }
 
 int main(int argc, const char *argv[]) {
-  if (argc < 6) {
-    cout << "Please input <filename> <target image path> <distance method>"
-            " <feature> <feature set file> <number of images to be found>";
-    return -1;
-  }
+  // if (argc < 6) {
+  //   cout << "Please input <filename> <target image path> <distance method>"
+  //           " <feature> <feature set file> <number of images to be found>";
+  //   return -1;
+  // }
 
   char target[256];
   char method[256];
@@ -68,6 +68,28 @@ int main(int argc, const char *argv[]) {
   sscanf(argv[5], "%d", &n);
   cout << "Number of images to match: " << n << endl;
 
+  /*
+   // get the target image name
+   strcpy(target, "../../data/test/pic.0752.jpg");
+   cout << "Target image name: " << target << endl;
+
+   // get the distance mthod name
+   strcpy(method, "ssd");
+   cout << "Distance method: " << method << endl;
+
+   // get the method name
+   strcpy(feature, "texture");
+   cout << "Feature name: " << feature << endl;
+
+   // get the feature file path
+   strcpy(feature_file, "../../data/texture.csv");
+   cout << "Feature file path: " << feature_file << endl;
+
+   // get the number of images to match
+   n = 3;
+   cout << "Number of images to match: " << n << endl;
+   */
+
   // read the file and get the images and features
   vector<char *> image_names;
   vector<std::vector<float>> image_data;
@@ -84,6 +106,13 @@ int main(int argc, const char *argv[]) {
   if (!strcmp(feature, "baseline")) {
     baseline(target_image, target_data);
   }
+  if (!strcmp(feature, "texture")) {
+    for (unsigned int i = 0; i < NUM_BINS; i++) {
+      target_data.push_back(0);
+    }
+    textureHist(target_image, target_data);
+  }
+  cout << "Done creating target image features";
   if (!strcmp(method, "ssd")) {
     for (unsigned int i = 0; i < image_names.size(); i++) {
       errors[SSD(target_data, image_data[i])] = image_names[i];

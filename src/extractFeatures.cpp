@@ -75,6 +75,13 @@ int main(int argc, const char *argv[]) {
         if (append_image_data_csv(filename, buffer, values, false) == 0) {
           cout << "Image written to file successfully!" << endl;
         }
+      } else if (!strcmp(feature, "texture")) {
+        vector<float> values;
+        textureHist(img, values);
+        char filename[] = "data/texture.csv";
+        if (append_image_data_csv(filename, buffer, values, false) == 0) {
+          cout << "Image written to file successfully!" << endl;
+        }
       }
     }
   }

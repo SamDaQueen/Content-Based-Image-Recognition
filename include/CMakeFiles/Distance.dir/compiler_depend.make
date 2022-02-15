@@ -218,8 +218,7 @@ include/CMakeFiles/Distance.dir/distance.cpp.obj: include/distance.cpp \
   D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/core/cvdef.h \
   D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/highgui.hpp \
   D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/imgcodecs.hpp \
-  D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/videoio.hpp \
-  D:/Documents/Northeastern/Courses/PRCV-5330/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/iostream
+  D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/videoio.hpp
 
 
 D:/Documents/Northeastern/Courses/PRCV-5330/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/exception:
@@ -655,5 +654,3 @@ D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/highgui
 D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/imgcodecs.hpp:
 
 D:/Documents/Northeastern/Courses/PRCV-5330/opencv/build/include/opencv2/videoio.hpp:
-
-D:/Documents/Northeastern/Courses/PRCV-5330/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/iostream:

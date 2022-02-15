@@ -9,11 +9,16 @@
  *
  */
 
+#include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <vector>
+
+#define NUM_BINS 16
+#define RG_X 16
+#define RG_Y 16
 
 using namespace cv;
 using namespace std;
