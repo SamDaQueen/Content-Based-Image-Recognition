@@ -52,6 +52,8 @@ int main(int argc, const char *argv[]) {
     return -1;
   }
 
+  cout << "Writing images..." << endl;
+
   // loop over all the files in the image file listing
   while ((dp = readdir(dirp)) != NULL) {
     // check if the file is an image
@@ -67,21 +69,21 @@ int main(int argc, const char *argv[]) {
       // printf("full path name: %s\n", buffer);
 
       Mat img = imread(buffer, IMREAD_COLOR);
-
       if (!strcmp(feature, "baseline")) {
         vector<float> values;
         baseline(img, values);
         char filename[] = "data/baseline.csv";
-        if (append_image_data_csv(filename, buffer, values, false) == 0) {
-          cout << "Image written to file successfully!" << endl;
-        }
+        append_image_data_csv(filename, buffer, values, false);
       } else if (!strcmp(feature, "texture")) {
-        vector<float> values;
+        vector<float> values(NUM_BINS, 0);
         textureHist(img, values);
         char filename[] = "data/texture.csv";
-        if (append_image_data_csv(filename, buffer, values, false) == 0) {
-          cout << "Image written to file successfully!" << endl;
-        }
+        append_image_data_csv(filename, buffer, values, false);
+      } else if (!strcmp(feature, "color")) {
+        vector<float> values(NUM_BINS * NUM_BINS, 0);
+        colorHist(img, values);
+        char filename[] = "data/color.csv";
+        append_image_data_csv(filename, buffer, values, false);
       }
     }
   }

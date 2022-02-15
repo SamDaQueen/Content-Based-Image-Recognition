@@ -93,7 +93,6 @@ int main(int argc, const char *argv[]) {
   // read the file and get the images and features
   vector<char *> image_names;
   vector<std::vector<float>> image_data;
-  read_image_data_csv(feature_file, image_names, image_data, false);
 
   Mat target_image = imread(target, IMREAD_COLOR);
 
@@ -103,28 +102,70 @@ int main(int argc, const char *argv[]) {
 
   vector<float> target_data;
 
-  if (!strcmp(feature, "baseline")) {
-    baseline(target_image, target_data);
-  }
-  if (!strcmp(feature, "texture")) {
-    for (unsigned int i = 0; i < NUM_BINS; i++) {
-      target_data.push_back(0);
+  if (!strcmp(feature, "texcol")) {
+    vector<float> target_texture(NUM_BINS, 0);
+    vector<float> target_color(NUM_BINS * NUM_BINS, 0);
+    textureHist(target_image, target_texture);
+    colorHist(target_image, target_color);
+
+    vector<std::vector<float>> image_data_tex;
+    vector<std::vector<float>> image_data_col;
+
+    strcpy(feature_file, "data/texture.csv");
+    read_image_data_csv(feature_file, image_names, image_data_tex, false);
+    strcpy(feature_file, "data/color.csv");
+    read_image_data_csv(feature_file, image_names, image_data_col, false);
+
+    if (!strcmp(method, "ssd")) {
+      for (unsigned int i = 0; i < image_data_tex.size(); i++) {
+        cout << "assigning for :"
+             << SSD(target_texture, image_data_tex[i]) +
+                    SSD(target_color, image_data_col[i])
+             << endl;
+        errors[SSD(target_texture, image_data_tex[i]) +
+               SSD(target_color, image_data_col[i])] = image_names[i];
+      }
+      cout << "errors calculated";
+    } else {
+      for (unsigned int i = 0; i < image_data_tex.size(); i++) {
+        errors[SAD(target_texture, image_data_tex[i]) +
+               SAD(target_color, image_data_col[i])] = image_names[i];
+      }
     }
-    textureHist(target_image, target_data);
-  }
-  cout << "Done creating target image features";
-  if (!strcmp(method, "ssd")) {
-    for (unsigned int i = 0; i < image_names.size(); i++) {
-      errors[SSD(target_data, image_data[i])] = image_names[i];
-    }
+
   } else {
-    for (unsigned int i = 0; i < image_names.size(); i++) {
-      errors[SAD(target_data, image_data[i])] = image_names[i];
+    read_image_data_csv(feature_file, image_names, image_data, false);
+
+    if (!strcmp(feature, "baseline")) {
+      baseline(target_image, target_data);
+    } else if (!strcmp(feature, "texture")) {
+      for (unsigned int i = 0; i < NUM_BINS; i++) {
+        target_data.push_back(0);
+      }
+      textureHist(target_image, target_data);
+    } else if (!strcmp(feature, "color")) {
+      for (unsigned int i = 0; i < NUM_BINS * NUM_BINS; i++) {
+        target_data.push_back(0);
+      }
+      colorHist(target_image, target_data);
+    }
+    cout << "Done creating target image features" << endl;
+    if (!strcmp(method, "ssd")) {
+      for (unsigned int i = 0; i < image_names.size(); i++) {
+        cout << "assigning for :" << SSD(target_data, image_data[i]) << endl;
+        errors[SSD(target_data, image_data[i])] = image_names[i];
+      }
+    } else {
+      for (unsigned int i = 0; i < image_names.size(); i++) {
+        errors[SAD(target_data, image_data[i])] = image_names[i];
+      }
     }
   }
 
   ErrorMap::iterator pos = errors.begin();
+  cout << "map size" << errors.size();
   resizeImage(target_image, target_image, n);
+  cout << "resized target image";
 
   unsigned int i;
   for (pos++, i = 0; i < n; ++pos, i++) {

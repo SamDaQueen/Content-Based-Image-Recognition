@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2022
  *
  */
-
 #include <iostream>
+#include <numeric>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -33,15 +33,6 @@ using namespace std;
 int baseline(Mat &src, vector<float> &image_data);
 
 /**
- * @brief Creates a feature vector using a 2-D histogram of the image
- *
- * @param src input image
- * @param image_data output vector to store image features to
- * @return int 0 if operation was succesful
- */
-int histogram(Mat &src, vector<float> &image_data);
-
-/**
  * @brief Creates a feature vector using histograms of multiple sections of the
  * image
  *
@@ -61,7 +52,7 @@ int multiHist(Mat &src, vector<float> &image_data);
 int textureHist(Mat &src, vector<float> &image_data);
 
 /**
- * @brief Creates a feature vector of the color of the image
+ * @brief Creates a feature vector of the color histogram of the image
  *
  * @param src input image
  * @param image_data output vector to store image features to

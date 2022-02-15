@@ -22,8 +22,6 @@ int baseline(Mat &src, vector<float> &image_data) {
   return 0;
 }
 
-int histogram(Mat &src, vector<float> &image_data) { return 0; }
-
 int greyscale(Mat &src, Mat &dst) {
   // loop over rows and cols
   for (unsigned int i = 0; i < src.rows; i++) {
@@ -175,6 +173,42 @@ int textureHist(Mat &src, vector<float> &image_data) {
   // imshow("grayscale", grayscaleMagnitude);
 
   extractFeatures(grayscaleMagnitude, image_data);
+
+  unsigned int sum = accumulate(image_data.begin(), image_data.end(), 0);
+
+  for (unsigned int i = 0; i < image_data.size(); i++) {
+    image_data[i] = image_data[i] / sum;
+  }
+
+  return 0;
+}
+
+int colorHist(Mat &src, vector<float> &image_data) {
+  float r, g;
+  unsigned char R, G, B;
+  unsigned int rIdx;
+  unsigned int gIdx;
+  for (unsigned int i = 0; i < src.rows; i++) {
+    for (unsigned int j = 0; j < src.cols; j++) {
+      R = src.at<Vec3b>(i, j)[0];
+      G = src.at<Vec3b>(i, j)[1];
+      B = src.at<Vec3b>(i, j)[2];
+
+      r = (float)R / (R + G + B + 1);
+      g = (float)G / (R + G + B + 1);
+
+      rIdx = r * RG_X;
+      gIdx = g * RG_Y;
+
+      image_data[rIdx * NUM_BINS + gIdx]++;
+    }
+  }
+
+  unsigned int sum = accumulate(image_data.begin(), image_data.end(), 0);
+
+  for (unsigned int i = 0; i < image_data.size(); i++) {
+    image_data[i] = image_data[i] / sum;
+  }
 
   return 0;
 }
