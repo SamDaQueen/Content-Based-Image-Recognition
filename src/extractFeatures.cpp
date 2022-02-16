@@ -24,6 +24,9 @@
 using namespace std;
 using namespace cv;
 
+/**
+ * @brief Main function for entry point to the program
+ */
 int main(int argc, const char *argv[]) {
   if (argc < 3) {
     cout << "Please input <filename> <directory path> <feature>";
@@ -82,7 +85,7 @@ int main(int argc, const char *argv[]) {
       } else if (!strcmp(feature, "histogram")) {
         vector<float> values(NUM_BINS * NUM_BINS, 0);
         colorHist(img, values);
-        char filename[] = "data/color.csv";
+        char filename[] = "data/histogram.csv";
         append_image_data_csv(filename, buffer, values, false);
       } else if (!strcmp(feature, "multi")) {
         vector<float> values;

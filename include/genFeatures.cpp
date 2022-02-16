@@ -193,9 +193,9 @@ int colorHist(Mat &src, vector<float> &image_data) {
   unsigned int gIdx;
   for (unsigned int i = 0; i < src.rows; i++) {
     for (unsigned int j = 0; j < src.cols; j++) {
-      R = src.at<Vec3b>(i, j)[0];
+      B = src.at<Vec3b>(i, j)[0];
       G = src.at<Vec3b>(i, j)[1];
-      B = src.at<Vec3b>(i, j)[2];
+      R = src.at<Vec3b>(i, j)[2];
 
       r = (float)R / (R + G + B + 1);
       g = (float)G / (R + G + B + 1);
